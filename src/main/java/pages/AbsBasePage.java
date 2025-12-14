@@ -3,17 +3,29 @@ package pages;
 import annotations.Path;
 import annotations.UrlTemplate;
 import annotations.Urls;
+import com.google.inject.Inject;
 import commons.AbsCommons;
 import exceptions.PathNotFoundException;
-import org.openqa.selenium.WebDriver;
+import io.qameta.allure.Step;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import support.GuiceScoped;
+import java.time.Duration;
 import java.util.Arrays;
+import java.util.List;
 
 public abstract class AbsBasePage<T> extends AbsCommons {
 
   private final String baseUrl = System.getProperty("base.url");
+  @Inject
+  private static WebDriverWait wait;
 
-  public AbsBasePage(WebDriver driver) {
-    super(driver);
+
+  @Inject
+  public AbsBasePage(GuiceScoped guiceScoped) {
+    super(guiceScoped);
   }
 
   private String getPathWithData(String name, String[] data) {
@@ -60,5 +72,23 @@ public abstract class AbsBasePage<T> extends AbsCommons {
   public T open(String name, String... data) {
     driver.get(baseUrl + getPathWithData(name, data));
     return (T) this;
+  }
+
+  @Step("Вернуться на страницу назад")
+  public T backToPage(){
+    driver.navigate().back();
+
+    return (T) this;
+  }
+
+  @Step("Ожидание загрузки всех элементов")
+  public void waitLoadAllElements(List<WebElement> element){
+    new WebDriverWait(driver, Duration.ofSeconds(15))
+            .until(ExpectedConditions.visibilityOfAllElements(element));
+  }
+  @Step("Ожидание загрузки всех элементов")
+  public void waitLoadClikableElement(WebElement element){
+    new WebDriverWait(driver, Duration.ofSeconds(15))
+            .until(ExpectedConditions.elementToBeClickable(element));
   }
 }

@@ -1,19 +1,19 @@
 package waiters;
 
-import org.openqa.selenium.TimeoutException;
-import org.openqa.selenium.WebDriver;
+import com.google.inject.Inject;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import pages.AbsBasePage;
+import support.GuiceScoped;
 import java.time.Duration;
 import java.util.function.Supplier;
 
-public class Waiter {
+public class Waiter extends AbsBasePage<Waiter> {
 
-  private final WebDriver driver;
-
-  public Waiter(WebDriver driver) {
-    this.driver = driver;
+  @Inject
+  public Waiter(GuiceScoped guiceScoped) {
+    super(guiceScoped);
   }
 
   public static WebElement waitWebElement(Supplier<WebElement> condition, Duration timeout) {
@@ -42,14 +42,5 @@ public class Waiter {
       }
     }
     return condition.get();
-  }
-
-  public boolean waitForCondition(ExpectedCondition condition, int time) {
-    try {
-      new WebDriverWait(driver, Duration.ofSeconds(time)).until(condition);
-      return true;
-    } catch (TimeoutException ignored) {
-      return false;
-    }
   }
 }

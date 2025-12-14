@@ -7,14 +7,13 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.events.EventFiringDecorator;
-import java.util.Locale;
-
 
 public class WebDriverFactory {
 
-  private final String browser = System.getProperty("browser.name").toLowerCase(Locale.ROOT);
-
-  public WebDriver create() {
+  public WebDriver create(String browser) {
+    if (browser == null) {
+      browser = System.getProperty("browser.name", "chrome").toLowerCase();
+    }
     switch (browser) {
       case "chrome": {
         ChromeDriver originDriver = new ChromeDriver((ChromeOptions) new ChromeSettings().setting());

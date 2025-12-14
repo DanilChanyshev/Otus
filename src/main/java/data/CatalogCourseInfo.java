@@ -1,12 +1,10 @@
 package data;
 
-import java.time.LocalDate;
-
 public class CatalogCourseInfo {
   private final String title;
-  private final LocalDate startDate;
+  private final String startDate;
 
-  public CatalogCourseInfo(String title, LocalDate startDate) {
+  public CatalogCourseInfo(String title, String startDate) {
     this.title = title;
     this.startDate = startDate;
   }
@@ -15,7 +13,7 @@ public class CatalogCourseInfo {
     return title;
   }
 
-  public LocalDate getStartDate() {
+  public String getStartDate() {
     return startDate;
   }
 
