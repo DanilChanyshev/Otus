@@ -38,7 +38,7 @@ public class CatalogCoursesPage extends AbsBasePage<CatalogCoursesPage> {
   ParserDateHelper parserDateHelper;
   @FindBy(css = "h1 > div.sc-hrqzy3-1.jEGzDf")
   private WebElement title;
-  @FindBy(css = ".sc-sbwx8a-0")
+  @FindBy(css = ".sc-1817vyo-0")
   private WebElement search;
 
   public CatalogCoursesPage(WebDriver driver) {

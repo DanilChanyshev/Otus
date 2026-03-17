@@ -7,8 +7,11 @@ public class ChromeSettings implements ISettings {
 
   @Override
   public AbstractDriverOptions setting() {
-    ChromeOptions chromeOptions = new ChromeOptions();
-    chromeOptions.addArguments("--start-maximized");
-    return chromeOptions;
+    ChromeOptions options = new ChromeOptions();
+    options.addArguments("--headless=new");
+    options.addArguments("--no-sandbox");
+    options.addArguments("--disable-dev-shm-usage");
+    options.addArguments("--window-size=1920,1080");
+    return options;
   }
 }
