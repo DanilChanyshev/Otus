@@ -1,6 +1,6 @@
 node('ui_runner') {
 
-    currentBuild.description = "<p style='color: blue;'>API tests</p>"
+    currentBuild.description = "<p style='color: blue;'>UI tests</p>"
 
     stage('Checkout') {
         checkout scm
