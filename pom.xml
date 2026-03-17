@@ -10,8 +10,8 @@
 
     <properties>
         <maven.version>3.14.0</maven.version>
-        <maven.compiler.source>20</maven.compiler.source>
-        <maven.compiler.target>20</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <selenium.version>4.36.0</selenium.version>
@@ -20,8 +20,8 @@
         <guice.version>7.0.0</guice.version>
         <jsoup.version>1.17.2</jsoup.version>
         <assertj.version>3.27.6</assertj.version>
-        <assertj.weaver.version>1.9.25</assertj.weaver.version>
         <allure.version>2.29.0</allure.version>
+        <aspectj.version>1.9.22</aspectj.version>
         <surefire-plugin.version>3.5.3</surefire-plugin.version>
         <checkstyle.plagin>3.3.1</checkstyle.plagin>
         <spotbugs.version>4.8.6.0</spotbugs.version>
@@ -93,24 +93,26 @@
                   <source>${maven.compiler.source}</source>
               </configuration>
           </plugin>
-          <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-surefire-plugin</artifactId>
-              <version>${surefire-plugin.version}</version>
-              <configuration>
-                  <systemPropertyVariables>
-                      <base.url>${base.url}</base.url>
-                      <browser.name>${browser.name}</browser.name>
-                  </systemPropertyVariables>
-              </configuration>
-              <dependencies>
-                  <dependency>
-                      <groupId>org.aspectj</groupId>
-                      <artifactId>aspectjweaver</artifactId>
-                      <version>${assertj.weaver.version}</version>
-                  </dependency>
-              </dependencies>
-          </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${surefire-plugin.version}</version>
+                <configuration>
+                    <argLine>-javaagent:${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar</argLine>
+                    <systemPropertyVariables>
+                        <base.url>${base.url}</base.url>
+                        <browser.name>${browser.name}</browser.name>
+                        <allure.results.directory>${project.build.directory}/allure-results</allure.results.directory>
+                    </systemPropertyVariables>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.aspectj</groupId>
+                        <artifactId>aspectjweaver</artifactId>
+                        <version>${aspectj.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
@@ -145,6 +147,14 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>io.qameta.allure</groupId>
+                <artifactId>allure-maven</artifactId>
+                <version>2.12.0</version>
+                <configuration>
+                    <reportVersion>2.20.1</reportVersion>
+                </configuration>
             </plugin>
         </plugins>
     </build>
