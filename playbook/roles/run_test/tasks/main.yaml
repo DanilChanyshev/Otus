@@ -1,0 +1,10 @@
+---
+- name: Build project
+  command: mvn clean compile
+  args:
+    chdir: "{{ workspace }}"
+
+- name: Run tests
+  command: mvn clean test allure:report
+  args:
+    chdir: "{{ workspace }}"

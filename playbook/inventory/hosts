@@ -1,0 +1,2 @@
+[ui-test]
+localhost ansible_connection=local
