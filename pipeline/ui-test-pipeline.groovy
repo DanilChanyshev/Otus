@@ -9,7 +9,7 @@ node('ui_runner') {
     stage('Run UI tests') {
         dir("${env.WORKSPACE}") {
             catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-                sh "mvn clean test"
+                sh "ansible-playbook -i playbook/inventory/hosts playbook/run_ui_test.yaml -e \"workspace=\$(pwd)\""
             }
         }
     }
