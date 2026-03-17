@@ -20,6 +20,7 @@
         <guice.version>7.0.0</guice.version>
         <jsoup.version>1.17.2</jsoup.version>
         <assertj.version>3.27.6</assertj.version>
+        <assertj.weaver.version>1.9.25</assertj.weaver.version>
         <allure.version>2.29.0</allure.version>
         <surefire-plugin.version>3.5.3</surefire-plugin.version>
         <checkstyle.plagin>3.3.1</checkstyle.plagin>
@@ -65,6 +66,11 @@
             <artifactId>allure-junit5</artifactId>
             <version>${allure.version}</version>
         </dependency>
+        <dependency>
+            <groupId>io.qameta.allure</groupId>
+            <artifactId>allure-java-commons</artifactId>
+            <version>${allure.version}</version>
+        </dependency>
     </dependencies>
 
     <profiles>
@@ -97,7 +103,39 @@
                       <browser.name>${browser.name}</browser.name>
                   </systemPropertyVariables>
               </configuration>
+              <dependencies>
+                  <dependency>
+                      <groupId>org.aspectj</groupId>
+                      <artifactId>aspectjweaver</artifactId>
+                      <version>${assertj.weaver.version}</version>
+                  </dependency>
+              </dependencies>
           </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>aspectj-maven-plugin</artifactId>
+                <version>1.15.0</version>
+                <configuration>
+                    <source>21</source>
+                    <target>21</target>
+                    <complianceLevel>21</complianceLevel>
+                    <aspectLibraries>
+                        <aspectLibrary>
+                            <groupId>io.qameta.allure</groupId>
+                            <artifactId>allure-java-commons</artifactId>
+                        </aspectLibrary>
+                    </aspectLibraries>
+                    <showWeaveInfo>true</showWeaveInfo>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>compile</goal>
+                            <goal>test-compile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
